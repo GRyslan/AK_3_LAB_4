@@ -93,40 +93,45 @@ endc:
 task2:
 	push {lr}
 
-	mov r1, 10
-	mov r2, 5
+	mov r1, 5
+	mov r2, 8
 
 	//program start
-	//step1 (r0=r1+r2)
-	add r0, r1, r2  
-	//step2 (r2=r2-1)
-	sub r2,#1
+	//step1
+	lsl r1, r1, #25  
+	//step2
+	add r1, r1, #7
 _step3:
-	// (r2=r1*r0)
-	mul r2,r1,r0
+	lsls r2, r2, #30
 
 	//step4
 	it vs
-	//step6 
-	lsrVS r2,r2,#1
+	//step6
+	lsrVS r2, r2, #1
 	bVS _step8
-	//step5 (r0=r1+100)
-	add r0, r1,100
-	//step7 (r1=r1+4)
-	lsls r2, r0,#2
+
+	//else - go to sub-program
+	bl subP1
+	//step5
+	add r3, r3, r1
+	//step7
+	lsls r2, r3, #2
 
 _step8:
 	it eq
 	blEQ _step3
 
-	//step9(r1 & r2)
-	and r0,r1,r2
+	//step9
+	asr r2, r2, #1
 
 	pop {pc}
 
+subP1:
+	push {lr}
+	mov r3, #3
 
 _step10:
-	add r1,r1,100
+	adds r3, r3, r1
 
 	//step11
 	it cc
@@ -141,9 +146,9 @@ _step13:
 	blVC _step10
 
 	//step14
-	sub r1,r1,#94
+	lsr r3, r3, #1
 	//step15
-	add r0,r1,#63
+	add r3, r3, #4
 
 
 	pop {pc}
@@ -152,8 +157,9 @@ subP2:
 	push {lr}
 
 	//step17
-	add r0,r1,#1
+	asr r3, r3, #2
 	//step18
-	add r1, r0, #1
+	add r3, r3, #8
 
 	pop {pc}
+
