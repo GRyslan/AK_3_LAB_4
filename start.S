@@ -19,6 +19,8 @@ vtable:
 __hard_reset__:
 // initialize stack here
 // if not initialized yet
-    bl Lab4
+    
+    bl task1
+    bl task2
     _loop: b _loop
     .size __hard_reset__, .-__hard_reset__
